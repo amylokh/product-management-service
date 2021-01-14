@@ -2,6 +2,7 @@ package product.service;
 
 import org.springframework.stereotype.Service;
 import product.model.Product;
+import product.repository.DataRepository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,12 +11,18 @@ import java.util.List;
 @Service
 public class ProductService {
 
-    private List<Product> myProducts = new ArrayList<>(Arrays.asList(new Product("123","lays","amazing chips")
-                                                                ,new Product("1234","balaji","good chips"),
-                                                                new Product("12313","nestle","amazing chocolates")));
+    private final DataRepository dataRepository;
+
+    private List<Product> myProducts = new ArrayList<>(Arrays.asList(new Product("123", "lays", "amazing chips")
+            , new Product("1234", "balaji", "good chips"),
+            new Product("12313", "nestle", "amazing chocolates")));
+
+    public ProductService(DataRepository dataRepository) {
+        this.dataRepository = dataRepository;
+    }
 
     public List<Product> getMyProducts() {
-        return myProducts;
+        return dataRepository.findAll();
     }
 
     public Product getProduct(String id) {
@@ -26,7 +33,7 @@ public class ProductService {
     }
 
     public void addProduct(Product product) {
-        myProducts.add(product);
+        dataRepository.save(product);
     }
 
     public void updateProduct(String id, Product product) {
