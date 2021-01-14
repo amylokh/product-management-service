@@ -7,6 +7,7 @@ import product.repository.DataRepository;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -21,15 +22,13 @@ public class ProductService {
         this.dataRepository = dataRepository;
     }
 
-    public List<Product> getMyProducts() {
+    public List<Product> getProducts() {
         return dataRepository.findAll();
     }
 
-    public Product getProduct(String id) {
-        return myProducts.stream()
-                .filter(p -> p.getId().equals(id))
-                .findFirst()
-                .get();
+    public Optional<Product> getProduct(String id) {
+        Optional<Product> product = dataRepository.findById(id);
+        return product;
     }
 
     public void addProduct(Product product) {

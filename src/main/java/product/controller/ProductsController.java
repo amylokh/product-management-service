@@ -1,11 +1,17 @@
 package product.controller;
 
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.HttpMediaTypeException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.server.ResponseStatusException;
 import product.model.Product;
 import product.service.ProductService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequestMapping("/product")
 @RestController
@@ -16,12 +22,18 @@ public class ProductsController {
 
     @GetMapping(value = "/all", produces = "application/json")
     public List<Product> getProducts() {
-        return productService.getMyProducts();
+        return productService.getProducts();
     }
 
     @GetMapping(value = "/{id}", produces = "application/json")
-    public Product getProduct(@PathVariable String id) {
-        return productService.getProduct(id);
+    public Optional<Product> getProduct(@PathVariable String id) {
+        Optional<Product> product= productService.getProduct(id);
+        if (product.isPresent()){
+            return product;
+        }
+        else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "product not found");
+        }
     }
 
     @PostMapping(value = "/{id}")
