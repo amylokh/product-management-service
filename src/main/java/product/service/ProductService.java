@@ -1,52 +1,34 @@
 package product.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import product.model.Product;
 import product.repository.DataRepository;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class ProductService {
+public class ProductService implements IProductService {
 
-    private final DataRepository dataRepository;
+    @Autowired
+    DataRepository dataRepository;
 
-    private List<Product> myProducts = new ArrayList<>(Arrays.asList(new Product("123", "lays", "amazing chips")
-            , new Product("1234", "balaji", "good chips"),
-            new Product("12313", "nestle", "amazing chocolates")));
-
-    public ProductService(DataRepository dataRepository) {
-        this.dataRepository = dataRepository;
-    }
-
-    public List<Product> getProducts() {
+    public List<Product> getAllProducts() {
         return dataRepository.findAll();
     }
 
-    public Optional<Product> getProduct(String id) {
-        Optional<Product> product = dataRepository.findById(id);
-        return product;
+    public Product getProduct(String id) {
+        return dataRepository.findById(id);
     }
 
-    public void addProduct(Product product) {
-        dataRepository.save(product);
+    public Product addProduct(Product product) {
+       return dataRepository.save(product);
     }
 
-    public void updateProduct(String id, Product product) {
-        for(int i=0; i<myProducts.size();i++) {
-            Product p = myProducts.get(i);
-            if (p.getId().equals(id)) {
-                myProducts.set(i, product);
-                return;
-            }
-        }
+    public Product updateProduct(String id, Product product) {
+        return dataRepository.updateProduct(id, product);
     }
 
     public void deleteProduct(String id) {
-        myProducts.removeIf(p -> p.getId().equals(id));
-
+        dataRepository.deleteById(id);
     }
 }

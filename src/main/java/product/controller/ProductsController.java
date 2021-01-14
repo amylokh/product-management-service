@@ -1,17 +1,13 @@
 package product.controller;
 
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.HttpMediaTypeException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.server.ResponseStatusException;
 import product.model.Product;
 import product.service.ProductService;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequestMapping("/product")
 @RestController
@@ -22,13 +18,13 @@ public class ProductsController {
 
     @GetMapping(value = "/all", produces = "application/json")
     public List<Product> getProducts() {
-        return productService.getProducts();
+        return productService.getAllProducts();
     }
 
     @GetMapping(value = "/{id}", produces = "application/json")
-    public Optional<Product> getProduct(@PathVariable String id) {
-        Optional<Product> product= productService.getProduct(id);
-        if (product.isPresent()){
+    public Product getProduct(@PathVariable String id) {
+        Product product= productService.getProduct(id);
+        if (product!=null) {
             return product;
         }
         else {
@@ -37,13 +33,18 @@ public class ProductsController {
     }
 
     @PostMapping(value = "/{id}")
-    public void createProduct(@PathVariable("id") String id, @RequestBody Product product) {
-        productService.addProduct(product);
+    public Product createProduct(@PathVariable("id") String id, @RequestBody Product product) {
+        Product addedProduct = productService.addProduct(product);
+        if (addedProduct!=null) return addedProduct;
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "product already exits");
     }
 
     @PutMapping(value = "/{id}")
     public void updateProduct(@PathVariable("id") String id, @RequestBody Product product) {
-        productService.updateProduct(id, product);
+       Product prod = productService.updateProduct(id, product);
+       if (prod==null) {
+           throw new ResponseStatusException(HttpStatus.NOT_FOUND, "product not found");
+       }
     }
 
     @DeleteMapping(value = "/{id}")
