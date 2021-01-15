@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import product.model.Product;
 import product.repository.DataRepository;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,17 +18,19 @@ public class ProductService implements IProductService {
     DataRepository dataRepository;
 
     public List<Product> getAllProducts() {
+        Map<String, Float> exchangeRates = iPriceService.retrieveCurrentExchangeRates().getRates();
         List<Product> allProducts = dataRepository.findAll();
         for (Product allProduct : allProducts) {
-            Map<String, Float> exchangedRates = getExchangedRates(allProduct.getPrice());
+            Map<String, Float> exchangedRates = computeExchangeRates(exchangeRates, allProduct.getPrice());
             allProduct.setExchangedPrices(exchangedRates);
         }
         return allProducts;
     }
 
     public Product getProduct(String id) {
+        Map<String, Float> exchangeRates = iPriceService.retrieveCurrentExchangeRates().getRates();
         Product product = dataRepository.findById(id);
-        Map<String, Float> exchangedRates = getExchangedRates(product.getPrice());
+        Map<String, Float> exchangedRates = computeExchangeRates(exchangeRates, product.getPrice());
         product.setExchangedPrices(exchangedRates);
         return product;
     }
@@ -44,12 +47,12 @@ public class ProductService implements IProductService {
         dataRepository.deleteById(id);
     }
 
-    private Map<String, Float> getExchangedRates(Float productPrice) {
-        Map<String, Float> exchangeRates = iPriceService.retrieveCurrentExchangeRates().getRates();
+    private Map<String, Float> computeExchangeRates(Map<String, Float> exchangeRates, Float productPrice) {
+        Map<String, Float> computedExchangeRates = new HashMap<>();
         for (Map.Entry<String, Float> entry : exchangeRates.entrySet()) {
-            entry.setValue(entry.getValue() * productPrice);
+            computedExchangeRates.put(entry.getKey(), entry.getValue() * productPrice);
         }
-        return exchangeRates;
+        return computedExchangeRates;
     }
 
 }
