@@ -1,22 +1,26 @@
 package product.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Document(collection = "Product")
 public class Product {
 
     private String id;
     private String name;
     private String description;
+    private String price;
 
     public Product() {
     }
 
-    public Product(String id, String name, String description) {
+    public Product(String id, String name, String description, String price) {
         super();
         this.id = id;
         this.name = name;
         this.description = description;
+        this.price = price;
     }
 
     public String getId() {
@@ -41,6 +45,14 @@ public class Product {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 
 }

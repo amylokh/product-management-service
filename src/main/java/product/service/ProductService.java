@@ -10,6 +10,9 @@ import java.util.List;
 public class ProductService implements IProductService {
 
     @Autowired
+    IPriceService iPriceService;
+
+    @Autowired
     DataRepository dataRepository;
 
     public List<Product> getAllProducts() {
@@ -17,6 +20,8 @@ public class ProductService implements IProductService {
     }
 
     public Product getProduct(String id) {
+        Object prices = iPriceService.retrieveCurrentExchangeRates();
+        System.out.println(prices.toString());
         return dataRepository.findById(id);
     }
 
