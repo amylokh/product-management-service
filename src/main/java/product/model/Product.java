@@ -10,12 +10,13 @@ public class Product {
     private String id;
     private String name;
     private String description;
-    private String price;
+    private Float price;
+    private Object exchangedPrices;
 
     public Product() {
     }
 
-    public Product(String id, String name, String description, String price) {
+    public Product(String id, String name, String description, Float price) {
         super();
         this.id = id;
         this.name = name;
@@ -47,12 +48,20 @@ public class Product {
         this.description = description;
     }
 
-    public String getPrice() {
+    public Float getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(Float price) {
         this.price = price;
+    }
+
+    public Object getExchangedPrices() {
+        return exchangedPrices;
+    }
+
+    public void setExchangedPrices(Object exchangedPrices) {
+        this.exchangedPrices = exchangedPrices;
     }
 
 }
