@@ -23,12 +23,13 @@ public class PriceService implements IPriceService {
 
     @Override
     public Price retrieveCurrentExchangeRates() {
+        System.out.println("Calling fixer API");
         final String fixerURL = "http://data.fixer.io/api/latest?access_key=c7c5a491cd074a819e1676dc47809873&symbols=USD,AUD,CAD,PLN,MXN,INR&format=1";
         ResponseEntity<Price> rawResult = null;
         try {
             rawResult = restTemplate.getForEntity(fixerURL, Price.class);
         }
-        catch (Exception e){
+        catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
