@@ -1,2 +1,2 @@
 # Product-management-service
-## A service used to manage different products & their prices
+### A service used to manage different products & their prices
