@@ -5,8 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import product.model.Product;
+import product.model.ProductException;
 import product.service.ProductService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequestMapping("/product")
@@ -28,22 +30,22 @@ public class ProductsController {
             return product;
         }
         else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "product not found");
+            throw new ProductException("product not found", HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping(value = "/{id}")
-    public Product createProduct(@PathVariable("id") String id, @RequestBody Product product) {
+    public Product createProduct(@PathVariable("id") String id, @Valid @RequestBody Product product) {
         Product addedProduct = productService.addProduct(product);
         if (addedProduct!=null) return addedProduct;
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "product already exits");
+        throw new ProductException("product already exits", HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping(value = "/{id}")
     public void updateProduct(@PathVariable("id") String id, @RequestBody Product product) {
        Product prod = productService.updateProduct(id, product);
        if (prod==null) {
-           throw new ResponseStatusException(HttpStatus.NOT_FOUND, "product not found");
+           throw new ProductException("product not found", HttpStatus.NOT_FOUND);
        }
     }
 

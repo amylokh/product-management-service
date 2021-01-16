@@ -30,9 +30,12 @@ public class ProductService implements IProductService {
     public Product getProduct(String id) {
         Map<String, Float> exchangeRates = iPriceService.retrieveCurrentExchangeRates().getRates();
         Product product = dataRepository.findById(id);
-        Map<String, Float> exchangedRates = computeExchangeRates(exchangeRates, product.getPrice());
-        product.setExchangedPrices(exchangedRates);
-        return product;
+        if (product!=null) {
+            Map<String, Float> exchangedRates = computeExchangeRates(exchangeRates, product.getPrice());
+            product.setExchangedPrices(exchangedRates);
+            return product;
+        }
+        return null;
     }
 
     public Product addProduct(Product product) {

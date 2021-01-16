@@ -2,14 +2,18 @@ package product.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.data.mongodb.core.mapping.Document;
+import javax.validation.constraints.NotBlank;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Document(collection = "Product")
 public class Product {
 
+    @NotBlank(message = "id is mandatory")
     private String id;
+    @NotBlank(message = "name is mandatory")
     private String name;
     private String description;
+    @NotBlank(message = "price is mandatory")
     private Float price;
     private String currency;
     private Object exchangedPrices;

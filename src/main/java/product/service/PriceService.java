@@ -8,8 +8,8 @@ import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.server.ResponseStatusException;
 import product.model.Price;
+import product.model.ProductException;
 
 @Service
 public class PriceService implements IPriceService {
@@ -32,7 +32,7 @@ public class PriceService implements IPriceService {
             rawResult = restTemplate.getForEntity(fixerURL, Price.class);
         }
         catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ProductException("problem occurred in calling fixer api", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         if (rawResult.getStatusCode() == HttpStatus.OK) {
@@ -40,7 +40,7 @@ public class PriceService implements IPriceService {
         }
         else {
             System.out.println("problem occurred in calling fixer api");
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ProductException("problem occurred in calling fixer api", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
