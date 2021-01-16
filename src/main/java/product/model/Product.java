@@ -11,6 +11,7 @@ public class Product {
     private String name;
     private String description;
     private Float price;
+    private String currency;
     private Object exchangedPrices;
 
     public Product() {
@@ -54,6 +55,14 @@ public class Product {
 
     public void setPrice(Float price) {
         this.price = price;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 
     public Object getExchangedPrices() {
