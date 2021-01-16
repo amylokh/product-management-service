@@ -20,9 +20,9 @@ public class ProductService implements IProductService {
     public List<Product> getAllProducts() {
         Map<String, Float> exchangeRates = iPriceService.retrieveCurrentExchangeRates().getRates();
         List<Product> allProducts = dataRepository.findAll();
-        for (Product allProduct : allProducts) {
-            Map<String, Float> exchangedRates = computeExchangeRates(exchangeRates, allProduct.getPrice());
-            allProduct.setExchangedPrices(exchangedRates);
+        for (Product product : allProducts) {
+            Map<String, Float> exchangedRates = computeExchangeRates(exchangeRates, product.getPrice());
+            product.setExchangedPrices(exchangedRates);
         }
         return allProducts;
     }
