@@ -30,7 +30,7 @@ public class ProductsController {
             return product;
         }
         else {
-            throw new ProductException("product not found", HttpStatus.NOT_FOUND);
+            throw new ProductException("Product not found", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -38,14 +38,14 @@ public class ProductsController {
     public Product createProduct(@PathVariable("id") String id, @Valid @RequestBody Product product) {
         Product addedProduct = productService.addProduct(product);
         if (addedProduct!=null) return addedProduct;
-        throw new ProductException("product already exits", HttpStatus.BAD_REQUEST);
+        throw new ProductException("Product already exits", HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping(value = "/{id}")
     public void updateProduct(@PathVariable("id") String id, @RequestBody Product product) {
        Product prod = productService.updateProduct(id, product);
        if (prod==null) {
-           throw new ProductException("product not found", HttpStatus.NOT_FOUND);
+           throw new ProductException("Product not found", HttpStatus.NOT_FOUND);
        }
     }
 
