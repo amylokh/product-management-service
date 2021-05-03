@@ -8,12 +8,12 @@ import javax.validation.constraints.NotBlank;
 @Document(collection = "Product")
 public class Product {
 
-    @NotBlank(message = "id is mandatory")
+    @NotBlank(message = "ID is mandatory")
     private String id;
-    @NotBlank(message = "name is mandatory")
+    @NotBlank(message = "Name is mandatory")
     private String name;
     private String description;
-    @NotBlank(message = "price is mandatory")
+    @NotBlank(message = "Price is mandatory")
     private Float price;
     private String currency;
     private Object exchangedPrices;
